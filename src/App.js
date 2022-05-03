@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { formatData } from "./utils";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
-  const [pair, setpair] = useState("");
+  const [pair, setPair] = useState("BTC-USD");
+  const [granularity, setGranularity] = useState(86400);
+  const [historicalData, setHistoricalData] = useState({});
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -30,25 +33,58 @@ function App() {
       first.current = true;
   }, []);
 
-  // useEffect(() => {
-  //   if(!first.current) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if(!first.current) {
+      return;
+    }
 
-  //   let msg = {
-  //     type: "subscribe",
-  //     product_ids: [pair],
-  //     channels: ["ticker"]
-  //   };
-  //   let jsonMsg = JSON.stringify(msg);
-  //   ws.current.send(jsonMsg);
-  // }, [pair])
+    let msg = {
+      type: "subscribe",
+      product_ids: [pair],
+      channels: ["ticker"]
+    };
+    let jsonMsg = JSON.stringify(msg);
+    ws.current.send(jsonMsg);
+
+    let historicalDataUrl = `${url}/products/${pair}/candles?granularity=${granularity}`;
+
+    axios.get(historicalDataUrl)
+      .then((res) => setHistoricalData(formatData(res.data)))
+      .catch((err) => console.log(err));
+
+    ws.current.onmessage = (e) => {
+      let data = JSON.parse(e.data);
+      console.log(data);
+    };
+
+  }, [pair]);
+
+  const handleSelect = (e) => {
+    let unsubscribeMsg = {
+      type: "unsubscribe",
+      product_ids: [pair],
+      channels: ["ticker"]
+    };
+    let unsubscribe = JSON.stringify(unsubscribeMsg);
+
+    ws.current.send(unsubscribe);
+
+    setPair(e.target.value);
+  }
 
   return (
     <div className="App">
-      {currencies.map((x) => {
-        return <li key={x.id}>{x.id}</li>
-      })}
+      {
+        <select name="currency" value={pair} onChange={handleSelect}>
+          {currencies.map((xe, indx) => {
+            return (
+              <option key={indx} value={xe.id}>
+                {xe.display_name}
+              </option>
+            )
+          })}
+        </select>
+      }
     </div>
   );
 }
