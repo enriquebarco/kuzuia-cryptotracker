@@ -4,8 +4,9 @@ import { formatData } from "./utils";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
-  const [pair, setPair] = useState("BTC-USD");
+  const [pair, setPair] = useState("");
   const [granularity, setGranularity] = useState(86400);
+  const [price, setPrice] = useState("0.00")
   const [historicalData, setHistoricalData] = useState({});
   const ws = useRef(null);
 
@@ -28,9 +29,10 @@ function App() {
           const sorted = filtered.sort((a,b) => a.id.localeCompare(b.id)); // sort pairs in alphabetical order
           const totalCurrencies = mainPairs.concat(sorted);
           setCurrencies(totalCurrencies);
+
+          first.current = true;
         });
 
-      first.current = true;
   }, []);
 
   useEffect(() => {
@@ -41,7 +43,7 @@ function App() {
     let msg = {
       type: "subscribe",
       product_ids: [pair],
-      channels: ["ticker"]
+      channels: ["ticker", "level2_batch"]
     };
     let jsonMsg = JSON.stringify(msg);
     ws.current.send(jsonMsg);
@@ -55,6 +57,17 @@ function App() {
     ws.current.onmessage = (e) => {
       let data = JSON.parse(e.data);
       console.log(data);
+      if(data.type === "ticker") {
+        if(data.product_id === pair) {
+          let price = data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          setPrice(price);
+        }
+      }
+
+      if(data.type === ("snapshot" || "l2update")) {
+        console.log(data);
+      }
+
     };
 
   }, [pair]);
@@ -63,7 +76,7 @@ function App() {
     let unsubscribeMsg = {
       type: "unsubscribe",
       product_ids: [pair],
-      channels: ["ticker"]
+      channels: ["ticker", "level2_batch"]
     };
     let unsubscribe = JSON.stringify(unsubscribeMsg);
 
@@ -74,7 +87,7 @@ function App() {
 
   return (
     <div className="App">
-      {
+      
         <select name="currency" value={pair} onChange={handleSelect}>
           {currencies.map((xe, indx) => {
             return (
@@ -84,7 +97,7 @@ function App() {
             )
           })}
         </select>
-      }
+        <h1>Price: ${price}</h1>
     </div>
   );
 }
