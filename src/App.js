@@ -78,12 +78,13 @@ function App() {
         }
       }
 
+      
       //handle initial level2 response
       if(data.type === "snapshot") {
 
         let asksMap = new Map();
         let bidsMap = new Map();
-
+        
         //only saving initial twenty bid/asks to prevent stack overflow and optimize speed
         for(let i = 0; i < 20; i++) {
           asksMap.set(data.asks[i][0], parseFloat(data.asks[i][1]));
@@ -92,9 +93,10 @@ function App() {
 
         setAsks(asksMap);
         setBids(bidsMap);
-
+        
         return;
       }
+
       
       //handling consequent level2 channel responses which will be used to update ladder created with the initial response
       if(data.type === "l2update") {
@@ -103,24 +105,31 @@ function App() {
         data.changes.forEach(change => {
           const [action, price, amount] = change;
           const parsed = parseFloat(amount);
-
-
+          
           if(action === "sell") {
             if(parsed) {
-              setAsks((prevAsks) => prevAsks.set(price, parsed));
+              setAsks((prevAsks) => prevAsks.set(price, parsed)); 
             } else {
-              // setAsks((prevAsks) => prevAsks.delete(price));
-            }
+              setAsks((prevAsks) => {
+                const newAsks = new Map(prevAsks);
+                newAsks.delete(price);
+                return newAsks;
+              })
+              console.log("deleted!", price)
+            };
           } else {
-            // if(parsed) {
-            //   setBids((prevBids) => prevBids[price] = parsed);
-            // } else {
-            //   setBids((prevBids) => delete prevBids[price]);
-            // }
+            if(parsed) {
+              setBids((prevBids) => prevBids.set(price, parsed));
+            } else {
+              setBids((prevBids) => {
+                const newBids = new Map(prevBids);
+                newBids.delete(price);
+                return newBids;
+              });
+            };
           };
         });
-      }
-
+      };
     };
   }, [pair]);
 
@@ -151,16 +160,28 @@ function App() {
         </select>
 
         <h1>Price: ${price}</h1>
-        
         {
           (_.isEmpty(asks) || _.isEmpty(bids)) ?
             <h2>establishing connection...</h2>
           :
-            [...asks.entries()].map((value, key) => {
-              return (
-                <li key={uniqid()}>Price: ${value} || Size: {key}</li>
-            )
-            })
+          <div>
+            <h4>asks</h4>
+              {
+                [...asks.entries()].map((value, key) => {
+                  return (
+                    <li key={uniqid()}>Price: ${value} || Size: {key}</li>
+                    )
+                  })
+              }
+            <h4>bids</h4>
+              {
+                [...bids.entries()].map((value, key) => {
+                  return (
+                    <li key={uniqid()}>Price: ${value} || Size: {key}</li>
+                )
+                })
+              }
+          </div>
         }
     </div>
   );
