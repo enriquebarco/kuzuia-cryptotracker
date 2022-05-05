@@ -2,12 +2,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: .24rem 1rem;
-    border-bottom: 1px solid white;
+    padding: .24rem 0rem;
+    margin: 0 1rem;
+    border-bottom: 1px solid rgb(255, 255, 255);
 
     &__logo {
         width: 4rem;
-        margin: .5rem;
     }
 
     &__selector {
@@ -15,11 +15,8 @@
         padding: .5rem 0;
         border: 0;
         border-radius: .3125rem;
-        margin-left: auto;
-        margin-right: auto;
         color: white;
         font-weight: 600;
-        margin: .5rem;
         text-align: center;
         border: 1px solid gray;
         outline: none;
@@ -30,7 +27,8 @@
     }
 
     &__title {
-        font-size: 1rem;
-        font-variation-settings: "wght" 800;
+        font-size: 1.5rem;
+        font-variation-settings: "wght" 300;
+        color: gold;
     }
 }

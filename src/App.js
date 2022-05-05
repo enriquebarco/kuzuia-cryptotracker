@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { formatData } from "./utils";
+import { formatData, addCommas } from "./utils";
 import uniqid from "uniqid";
-import _ from "lodash";
+import _, { add } from "lodash";
 import Header from "./components/Header/Header";
+import TopOfBook from "./components/TopOfBook/TopOfBook";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
   const [pair, setPair] = useState("");
   const [granularity, setGranularity] = useState(86400);
-  const [price, setPrice] = useState("0.00")
-  const [historicalData, setHistoricalData] = useState({});
+  const [price, setPrice] = useState("");
+  const [price24hr, setPrice24hr] = useState("");
+  const [bestAsk, setBestAsk] = useState("");
+  const [bestBid, setBestBid] = useState("");
   const [asks, setAsks] = useState({});
   const [bids, setBids] = useState({});
+  const [historicalData, setHistoricalData] = useState({});
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -75,8 +79,10 @@ function App() {
         //handle ticker channel response for pricing
         if(data.type === "ticker") {
           if(data.product_id === pair) {
-            let price = data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ","); //regex to add commas for user readability
-            setPrice(price);
+            setPrice(data.price);
+            setPrice24hr(data.open_24h);
+            setBestAsk(data.best_ask);
+            setBestBid(data.best_bid);
           }
         }
   
@@ -159,7 +165,13 @@ function App() {
         handleSelect={handleSelect}
       />
 
-        <h1>Price: ${price}</h1>
+      <TopOfBook
+        price={price}
+        price24hr={price24hr}
+        bestAsk={bestAsk}
+        bestBid={bestBid}
+      />
+      
         {
           (_.isEmpty(asks) || _.isEmpty(bids)) ?
             <h2>establishing connection...</h2>
