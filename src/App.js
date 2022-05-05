@@ -3,6 +3,7 @@ import axios from "axios";
 import { formatData } from "./utils";
 import uniqid from "uniqid";
 import _ from "lodash";
+import Header from "./components/Header/Header";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -151,16 +152,12 @@ function App() {
 
    return (
     <div className="App">
-      
-        <select name="currency" value={pair} onChange={handleSelect}>
-          {currencies.map((xe, indx) => {
-            return (
-              <option key={indx} value={xe.id}>
-                {xe.display_name}
-              </option>
-            )
-          })}
-        </select>
+
+      <Header 
+        currencies={currencies}
+        pair={pair}
+        handleSelect={handleSelect}
+      />
 
         <h1>Price: ${price}</h1>
         {
@@ -170,7 +167,7 @@ function App() {
           <div>
             <h4>asks</h4>
               {
-                [...asks.entries()].map((value, key) => {
+                [...asks.entries()].map(([value, key]) => {
                   return (
                     <li key={uniqid()}>Price: ${value} || Size: {key}</li>
                     )
