@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react';
 import { addCommas } from '../../utils';
 import "./TopOfBook.scss";
 

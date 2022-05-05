@@ -38,4 +38,4 @@ export const formatData = (data) => {
   export const addCommas = (string) => {
     if(string[1] === ".") return string;
     return string.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-  }
+  };

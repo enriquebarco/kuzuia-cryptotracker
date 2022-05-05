@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { formatData, addCommas } from "./utils";
 import uniqid from "uniqid";
-import _, { add } from "lodash";
+import _ from "lodash";
 import Header from "./components/Header/Header";
 import TopOfBook from "./components/TopOfBook/TopOfBook";
+import PriceChart from "./components/PriceChart/PriceChart";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -142,7 +143,6 @@ function App() {
     };
   }); //dependency array not included so state is always included in scope after every render cycle
 
-
   const handleSelect = (e) => {
     let unsubscribeMsg = {
       type: "unsubscribe",
@@ -171,6 +171,8 @@ function App() {
         bestAsk={bestAsk}
         bestBid={bestBid}
       />
+
+      <PriceChart historicalData={historicalData}/>
       
         {
           (_.isEmpty(asks) || _.isEmpty(bids)) ?
