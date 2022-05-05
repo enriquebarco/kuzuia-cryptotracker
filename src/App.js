@@ -19,6 +19,8 @@ function App() {
 
   useEffect(() => {
     ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
+    ws.current.onopen = () => console.log("ws open");
+    ws.current.onclose = () => console.log("ws closed");
 
     // API call to get a list of all currency pairs
       axios.get(`${url}/products`)
@@ -37,7 +39,6 @@ function App() {
 
           first.current = true;
         });
-
   }, []);
 
   useEffect(() => {
@@ -66,72 +67,74 @@ function App() {
     }, [pair]);
     
     useEffect(() => {
-    //handling all the responses from the websocket
-    ws.current.onmessage = (e) => {
-      let data = JSON.parse(e.data);
-
-      //handle ticker channel response for pricing
-      if(data.type === "ticker") {
-        if(data.product_id === pair) {
-          let price = data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ","); //regex to add commas for user readability
-          setPrice(price);
+      //handling all the responses from the websocket
+      ws.current.onmessage = (e) => {
+        let data = JSON.parse(e.data);
+  
+        //handle ticker channel response for pricing
+        if(data.type === "ticker") {
+          if(data.product_id === pair) {
+            let price = data.price.replace(/\B(?=(\d{3})+(?!\d))/g, ","); //regex to add commas for user readability
+            setPrice(price);
+          }
         }
-      }
-
-      
-      //handle initial level2 response
-      if(data.type === "snapshot") {
-
-        let asksMap = new Map();
-        let bidsMap = new Map();
+  
         
-        //only saving initial twenty bid/asks to prevent stack overflow and optimize speed
-        for(let i = 0; i < 20; i++) {
-          asksMap.set(data.asks[i][0], parseFloat(data.asks[i][1]));
-          bidsMap.set(data.bids[i][0], parseFloat(data.bids[i][1]));
-        }
-
-        setAsks(asksMap);
-        setBids(bidsMap);
-        
-        return;
-      }
-
-      
-      //handling consequent level2 channel responses which will be used to update ladder created with the initial response
-      if(data.type === "l2update") {
-        
-        
-        data.changes.forEach(change => {
-          const [action, price, amount] = change;
-          const parsed = parseFloat(amount);
+        //handle initial level2 response
+        if(data.type === "snapshot") {
+  
+          let asksMap = new Map();
+          let bidsMap = new Map();
           
-          if(action === "sell") {
-            if(parsed) {
-              setAsks((prevAsks) => prevAsks.set(price, parsed)); 
+          //only saving initial twenty bid/asks to prevent stack overflow and optimize speed
+          for(let i = 0; i < 20; i++) {
+            asksMap.set(data.asks[i][0], parseFloat(data.asks[i][1]));
+            bidsMap.set(data.bids[i][0], parseFloat(data.bids[i][1]));
+          }
+  
+          setAsks(asksMap);
+          setBids(bidsMap);
+          
+          return;
+        }
+        
+        //handling consequent level2 channel responses which will be used to update ladder created with the initial response
+        if(data.type === "l2update") {
+          
+          data.changes.forEach(change => {
+            const [action, price, amount] = change;
+            const parsed = parseFloat(amount);
+            
+            if(action === "sell") {
+              if(parsed) {
+                if(asks.size < 20) {
+                  setAsks((prevAsks) => prevAsks.set(price, parsed)); 
+                } 
+              } else {
+                setAsks((prevAsks) => {
+                  const newAsks = new Map(prevAsks);
+                  newAsks.delete(price);
+                  return newAsks;
+                })
+              };
             } else {
-              setAsks((prevAsks) => {
-                const newAsks = new Map(prevAsks);
-                newAsks.delete(price);
-                return newAsks;
-              })
-              console.log("deleted!", price)
+              if(parsed) {
+                if(bids.size < 20) {
+                  setBids((prevBids) => prevBids.set(price, parsed));
+                }
+              } else {
+                setBids((prevBids) => {
+                  const newBids = new Map(prevBids);
+                  newBids.delete(price);
+                  return newBids;
+                });
+              };
             };
-          } else {
-            if(parsed) {
-              setBids((prevBids) => prevBids.set(price, parsed));
-            } else {
-              setBids((prevBids) => {
-                const newBids = new Map(prevBids);
-                newBids.delete(price);
-                return newBids;
-              });
-            };
-          };
-        });
-      };
+          });
+        };
     };
-  }, [pair]);
+  }); //dependency array not included so state is always included in scope after every render cycle
+
 
   const handleSelect = (e) => {
     let unsubscribeMsg = {
