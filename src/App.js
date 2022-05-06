@@ -10,7 +10,7 @@ import PriceChart from "./components/PriceChart/PriceChart";
 function App() {
   const [currencies, setCurrencies] = useState([]);
   const [pair, setPair] = useState("");
-  const [granularity, setGranularity] = useState(86400);
+  const [timeFrame, setTimeFrame] = useState("sixMonths")
   const [price, setPrice] = useState("");
   const [price24hr, setPrice24hr] = useState("");
   const [bestAsk, setBestAsk] = useState("");
@@ -61,16 +61,19 @@ function App() {
     };
     let jsonMsg = JSON.stringify(msg);
     ws.current.send(jsonMsg);
-
-    let historicalDataUrl = `${url}/products/${pair}/candles?granularity=${granularity}`;
-    
-    // API call to get historical prices, used for charts
-    axios.get(historicalDataUrl)
-      .then((res) => setHistoricalData(formatData(res.data)))
-      .catch((err) => console.log(err));
-
       
     }, [pair]);
+
+    useEffect(() => {
+
+      let historicalDataUrl = `${url}/products/${pair}/candles?granularity=86400`;
+    
+      // API call to get historical prices, used for charts
+      axios.get(historicalDataUrl)
+        .then((res) => setHistoricalData(formatData(timeFrame, res.data)))
+        .catch((err) => console.log(err));
+  
+    }, [pair, timeFrame])
     
     useEffect(() => {
       //handling all the responses from the websocket
@@ -172,7 +175,10 @@ function App() {
         bestBid={bestBid}
       />
 
-      <PriceChart historicalData={historicalData}/>
+      <PriceChart 
+        historicalData={historicalData}
+        setTimeFrame={setTimeFrame}
+      />
       
         {
           (_.isEmpty(asks) || _.isEmpty(bids)) ?

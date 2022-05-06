@@ -1,7 +1,41 @@
+@use "../../styles/variables" as *;
+
 .price-chart {
     &__container {
-        height: 100vh;
+        height: 60vh;
+        padding: 1rem;
+        text-align: end;
+    }
+
+    &__title-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 1rem;
+        padding: 1rem 0;
+    }
+    
+    &__title {
+        margin: 0;
+    }
+
+    &__button-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    &__subtitle {
+        color: $color-primary-fade;
+        font-size: .75rem;
+        flex-basis: 100%;
         text-align: center;
-        background-color: aqua;
+        margin: 0;
+        margin-bottom: .25rem;
+    }
+
+
+    &__dates-wrapper {
+        margin-right: auto
     }
 };
