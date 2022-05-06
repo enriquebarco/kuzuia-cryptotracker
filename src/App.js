@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { formatData, addCommas } from "./utils";
+import { formatData } from "./utils";
 import uniqid from "uniqid";
 import _ from "lodash";
 import Header from "./components/Header/Header";
@@ -10,7 +10,7 @@ import PriceChart from "./components/PriceChart/PriceChart";
 function App() {
   const [currencies, setCurrencies] = useState([]);
   const [pair, setPair] = useState("");
-  const [timeFrame, setTimeFrame] = useState("sixMonths")
+  const [timeFrame, setTimeFrame] = useState("sixMonths");
   const [price, setPrice] = useState("");
   const [price24hr, setPrice24hr] = useState("");
   const [bestAsk, setBestAsk] = useState("");
@@ -65,6 +65,9 @@ function App() {
     }, [pair]);
 
     useEffect(() => {
+      if(!first.current) {
+        return;
+      }
 
       let historicalDataUrl = `${url}/products/${pair}/candles?granularity=86400`;
     

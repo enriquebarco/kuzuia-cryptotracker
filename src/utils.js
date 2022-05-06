@@ -6,8 +6,8 @@ export const formatData = (timeFrame, data) => {
           label: "Price",
           data: [],
           backgroundColor: "rgb(255, 215, 0)",
-          borderColor: "rgb(212, 181, 4)",
-          fill: false
+          borderColor: "rgb(255, 215, 0)",
+          fill: false,
         }
       ]
     };
