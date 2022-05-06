@@ -6,6 +6,8 @@ import _ from "lodash";
 import Header from "./components/Header/Header";
 import TopOfBook from "./components/TopOfBook/TopOfBook";
 import PriceChart from "./components/PriceChart/PriceChart";
+import OrderBook from "./components/OrderBook/OrderBook";
+import Placeholder from "./components/Placeholder/Placeholder";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -13,11 +15,13 @@ function App() {
   const [timeFrame, setTimeFrame] = useState("sixMonths");
   const [price, setPrice] = useState("");
   const [price24hr, setPrice24hr] = useState("");
+  const [volume, setVolume] = useState("");
   const [bestAsk, setBestAsk] = useState("");
   const [bestBid, setBestBid] = useState("");
   const [asks, setAsks] = useState({});
   const [bids, setBids] = useState({});
   const [historicalData, setHistoricalData] = useState({});
+  const [isChart, setIsChart] = useState(true);
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -86,6 +90,7 @@ function App() {
         //handle ticker channel response for pricing
         if(data.type === "ticker") {
           if(data.product_id === pair) {
+            setVolume(data.volume_30d);
             setPrice(data.price);
             setPrice24hr(data.open_24h);
             setBestAsk(data.best_ask);
@@ -170,18 +175,38 @@ function App() {
         pair={pair}
         handleSelect={handleSelect}
       />
+      {
+        (_.isEmpty(asks) || _.isEmpty(bids) || !price ) ?
+        <Placeholder />
+        :
+        <>
+          <TopOfBook
+            price={price}
+            price24hr={price24hr}
+            volume={volume}
+            bestAsk={bestAsk}
+            bestBid={bestBid}
+          />
 
-      <TopOfBook
-        price={price}
-        price24hr={price24hr}
-        bestAsk={bestAsk}
-        bestBid={bestBid}
-      />
+          {
+            isChart ? 
+            <PriceChart 
+              historicalData={historicalData}
+              setTimeFrame={setTimeFrame}
+              setIsChart={setIsChart}
+            />
+            :
+            <OrderBook
+              bestAsk={bestAsk}
+              bestBid={bestBid}
+              asks={asks}
+              bids={bids}
+              setIsChart={setIsChart}
+            />
+          }
+        </>
+      }
 
-      <PriceChart 
-        historicalData={historicalData}
-        setTimeFrame={setTimeFrame}
-      />
       
         {
           (_.isEmpty(asks) || _.isEmpty(bids)) ?

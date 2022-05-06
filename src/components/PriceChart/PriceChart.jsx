@@ -3,10 +3,11 @@ import { Line, Chart } from "react-chartjs-2";
 import { _Chart as _ChartJS } from 'chart.js/auto'
 import _ from "lodash";
 import "./PriceChart.scss";
-import { addCommas } from '../../utils';
+import chartGold from "../../assets/icons/chart-gold.png";
+import lineWhite from "../../assets/icons/line-white.png";
 
-function PriceChart( { historicalData, setTimeFrame } ) {
-    const [active, setActive] = useState("price-chart__button-six-mos");
+function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
+    const [activeChart, setActiveChart] = useState("sixMonths");
 
 
     const opts = {
@@ -45,41 +46,40 @@ function PriceChart( { historicalData, setTimeFrame } ) {
       
       const handleTimeChange1 = () => {
           const string = "sixMonths";
-        setActive("sixMonths");
+        setActiveChart("sixMonths");
         setTimeFrame(string);
     }
 
     const handleTimeChange2 = () => {
         const string = "threeMonths";
-        setActive(string);
+        setActiveChart(string);
         setTimeFrame(string);
     }
 
     const handleTimeChange3 = () => {
         const string = "oneWeek";
-        setActive(string);
+        setActiveChart(string);
         setTimeFrame(string);
     }
-    
-    if(_.isEmpty(historicalData)) {
-        return <h2>choose</h2>
-    };
+
+    const handleClick = () => {
+        setIsChart(false)
+    }
 
     return (
       <div className="price-chart">
         <div className="price-chart__title-wrapper">
             <h3 className="price-chart__title">Price Charts</h3>
             <div className="price-chart__button-wrapper">
-                <h5 className="price-chart__subtitle">Select</h5>
-                <button className="price-chart__button">Charts</button>
-                <button className="price-chart__button">Book</button>
+                <img src={chartGold} alt="price chart " className="price-chart__icon" />
+                <img onClick={handleClick} src={lineWhite} alt="order book " className="price-chart__icon" />
             </div>
         </div>
         <div className="price-chart__container">
             <div className="price-chart__dates-wrapper">
-                <button onClick={handleTimeChange1} className={`price-chart__button-six-mos ${active === "sixMonths" ? "price-chart__button-active" : ""}`}>6 Mos</button>
-                <button onClick={handleTimeChange2} className={`price-chart__button-three-mos ${active === "threeMonths" ? "price-chart__button-active" : ""}`}>3 Mos</button>
-                <button onClick={handleTimeChange3} className={`price-chart__button-one-wk ${active === "oneWeek" ? "price-chart__button-active" : ""}`}>1 Wk</button>
+                <button onClick={handleTimeChange1} className={`price-chart__button ${activeChart === "sixMonths" ? "price-chart__button-active" : ""}`}>6 Mos</button>
+                <button onClick={handleTimeChange2} className={`price-chart__button ${activeChart === "threeMonths" ? "price-chart__button-active" : ""}`}>3 Mos</button>
+                <button onClick={handleTimeChange3} className={`price-chart__button ${activeChart === "oneWeek" ? "price-chart__button-active" : ""}`}>1 Wk</button>
             </div>
             <Line data={historicalData} options={opts} />
         </div>

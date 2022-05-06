@@ -7,6 +7,7 @@ function Header({ currencies, pair, handleSelect }) {
     <header className="header">
         <img src={logo} alt="logo" className="header__logo" />
           <select name="currency" value={pair} onChange={handleSelect}className="header__selector">
+            <option value="none" selected hidden>Select XE</option>
             {currencies.map((xe, indx) => {
               return (
                 <option className="header__selector-option" key={indx} value={xe.id}>{xe.display_name}</option>
