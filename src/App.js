@@ -4,10 +4,10 @@ import { formatData } from "./utils";
 import uniqid from "uniqid";
 import _ from "lodash";
 import Header from "./components/Header/Header";
-import TopOfBook from "./components/TopOfBook/TopOfBook";
 import PriceChart from "./components/PriceChart/PriceChart";
 import OrderBook from "./components/OrderBook/OrderBook";
 import Placeholder from "./components/Placeholder/Placeholder";
+import PriceHero from "./components/PriceHero/PriceHero";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -176,11 +176,11 @@ function App() {
         handleSelect={handleSelect}
       />
       {
-        (_.isEmpty(asks) || _.isEmpty(bids) || !price ) ?
+        (_.isEmpty(asks) || _.isEmpty(bids) || !price || !historicalData) ?
         <Placeholder />
         :
         <>
-          <TopOfBook
+          <PriceHero
             price={price}
             price24hr={price24hr}
             volume={volume}

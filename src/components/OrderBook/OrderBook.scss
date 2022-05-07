@@ -1,0 +1,57 @@
+@use "../../styles/variables" as *;
+
+.order-book {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    &__title-wrapper {
+        flex-basis: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0 1rem;
+        padding: 1rem 0;
+    }
+
+    &__title {
+        margin: 0;
+    }
+
+    &__button-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
+    &__top-of-book {
+        &-container {
+            display: flex;
+            flex-basis: 100%;
+            justify-content: space-between;
+            margin: 1rem;
+        }
+
+        &-wrapper {
+            align-items: center;
+        }
+    }
+
+
+    &__title {
+        &--bid {
+            color: rgb(88, 248, 88);
+        }
+
+        &--ask {
+            color: rgb(255, 97, 97);
+        }
+    }
+
+    &__subtitle {
+        margin: 0;
+        margin-top: .25rem;
+        font-size: .75rem;
+        color:  $color-primary-fade;
+        text-align: center;
+    }
+}

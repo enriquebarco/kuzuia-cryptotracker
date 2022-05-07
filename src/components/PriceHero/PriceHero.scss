@@ -1,6 +1,6 @@
 @use "../../styles/variables" as *;
 
-.top-of-book {
+.hero {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,7 +50,7 @@
         margin: 0;
         margin-bottom: .5rem;
         &--positive {
-            color: rgb(30, 148, 30);
+            color: rgb(88, 248, 88);
         }
 
         &--negative {
