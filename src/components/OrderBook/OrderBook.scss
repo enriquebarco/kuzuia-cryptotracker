@@ -14,6 +14,15 @@
         padding: 1rem 0;
     }
 
+    &__container {
+        margin: 0 1rem;
+        flex-basis: 100%;
+        box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+        background-color: rgba(255, 255, 255, 0.123);
+        border-radius: 0.5rem;
+        padding: 1rem;
+    }
+
     &__title {
         margin: 0;
     }
@@ -28,11 +37,13 @@
             display: flex;
             flex-basis: 100%;
             justify-content: space-between;
-            margin: 1rem;
+            margin-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $color-primary;
         }
 
         &-wrapper {
-            align-items: center;
+            // text-align: left;
         }
     }
 
@@ -52,6 +63,51 @@
         margin-top: .25rem;
         font-size: .75rem;
         color:  $color-primary-fade;
-        text-align: center;
+
+        &--ask {
+            text-align: right;
+        }
+    }
+
+    &__details-container {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__bids-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        border-right: 1px solid $color-primary;
+        padding-right: 1rem;
+    }
+
+    &__column {
+        display: flex;
+        flex-basis: 100%;
+        justify-content: space-between;
+    }
+
+    &__details-wrapper {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &__asks-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 100%;
+        padding-left: 1rem;
+    }
+
+    &__details-subtitle {
+        margin: 0;
+        font-size: .75rem;
+        color:  $color-primary-fade;
+        margin-top: 1rem;
+    }
+
+    &__text {
+        font-size: .75rem;
     }
 }
