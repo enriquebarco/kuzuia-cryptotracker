@@ -55,7 +55,7 @@ const toSortArr = map => {
             {
               toSortArr(bids).map(([value, key]) => {
                 return (
-                    <div className="order-book__details-wrapper">
+                    <div className="order-book__details-wrapper fade-in-bid fade-out-bid">
                       <h5 className="order-book__text">${addCommas(value)}</h5>
                       <h5 className="order-book__text">{key.toFixed(3)}</h5>
                     </div>
@@ -71,7 +71,7 @@ const toSortArr = map => {
             {
               toSortArr(asks).map(([value, key]) => {
                 return (
-                  <div className="order-book__details-wrapper">
+                  <div className="order-book__details-wrapper fade-in-ask fade-out-ask">
                     <h5 className="order-book__text">${addCommas(value)}</h5>
                     <h5 className="order-book__text">{key.toFixed(3)}</h5>
                   </div>
