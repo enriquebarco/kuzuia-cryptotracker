@@ -1,7 +1,13 @@
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .price-chart {
-    
+    padding-bottom: 1rem;
+
+    @include tablet {
+        padding-bottom: 2rem;
+    }
+
     &__title-wrapper {
         display: flex;
         justify-content: space-between;
@@ -9,15 +15,28 @@
         margin: 0 1rem;
         padding: 1rem 0;
     }
+
+    @include tablet {
+        margin: 0 2rem;
+    }
     
     &__title {
         margin: 0;
+
+        @include tablet {
+            font-size: 1.5rem;
+        }
     }
 
     &__icon {
         width: 2rem;
         padding: 0 .25rem;
         padding-left: .875rem;
+
+        @include tablet {
+            width: 3rem;
+            padding-left: 1.25rem;
+        }
     }
 
     &__button-wrapper {
@@ -33,6 +52,7 @@
         text-align: center;
         margin: 0;
         margin-bottom: .25rem;
+        background-color: white;
     }
 
     &__container {

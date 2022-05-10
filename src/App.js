@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { formatData } from "./utils";
-import uniqid from "uniqid";
 import _ from "lodash";
 import Header from "./components/Header/Header";
 import PriceChart from "./components/PriceChart/PriceChart";
@@ -41,6 +40,7 @@ function App() {
             if(pair.quote_currency === "USD" && !mainPairsArr.includes(pair.id)) {
               return pair;  // returning only USD currencies excluding including the main pairs
             }
+            return false
 
           });
           const sorted = filtered.sort((a,b) => a.id.localeCompare(b.id)); // sort pairs in alphabetical order
@@ -105,10 +105,10 @@ function App() {
           let asksMap = new Map();
           let bidsMap = new Map();
           
-          //only saving initial twenty bid/asks to prevent stack overflow and optimize speed
-          for(let i = 0; i < 20; i++) {
-            asksMap.set(data.asks[i][0], parseFloat(data.asks[i][1]));
-            bidsMap.set(data.bids[i][0], parseFloat(data.bids[i][1]));
+          //only saving initial 15 bid/asks to prevent stack overflow and optimize speed
+          for(let i = 0; i < 15; i++) {
+            asksMap.set(parseFloat(data.asks[i][0]), parseFloat(data.asks[i][1]));
+            bidsMap.set(parseFloat(data.bids[i][0]), parseFloat(data.bids[i][1]));
           }
   
           setAsks(asksMap);
@@ -122,29 +122,28 @@ function App() {
           
           data.changes.forEach(change => {
             const [action, price, amount] = change;
-            const parsed = parseFloat(amount);
+            const parsedPrice = parseFloat(price)
+            const parsedAmount = parseFloat(amount);
+
             
+            // As new asks/bids get added into the Map, the size will grow. However, with deletions also happening in real time when asks/bids are fulfilled, the map should never increase to more than 1000
             if(action === "sell") {
-              if(parsed) {
-                if(asks.size < 20) {
-                  setAsks((prevAsks) => prevAsks.set(price, parsed)); 
-                } 
+              if(parsedAmount) {
+                  setAsks((prevAsks) => prevAsks.set(parsedPrice, parsedAmount)); 
               } else {
                 setAsks((prevAsks) => {
                   const newAsks = new Map(prevAsks);
-                  newAsks.delete(price);
+                  newAsks.delete(parsedPrice);
                   return newAsks;
                 })
               };
             } else {
-              if(parsed) {
-                if(bids.size < 20) {
-                  setBids((prevBids) => prevBids.set(price, parsed));
-                }
+              if(parsedAmount) {
+                  setBids((prevBids) => prevBids.set(parsedPrice, parsedAmount));
               } else {
                 setBids((prevBids) => {
                   const newBids = new Map(prevBids);
-                  newBids.delete(price);
+                  newBids.delete(parsedPrice);
                   return newBids;
                 });
               };
@@ -206,31 +205,6 @@ function App() {
           }
         </>
       }
-
-      
-        {
-          (_.isEmpty(asks) || _.isEmpty(bids)) ?
-            <h2>establishing connection...</h2>
-          :
-          <div>
-            <h4>asks</h4>
-              {
-                [...asks.entries()].map(([value, key]) => {
-                  return (
-                    <li key={uniqid()}>Price: ${value} || Size: {key}</li>
-                    )
-                  })
-              }
-            <h4>bids</h4>
-              {
-                [...bids.entries()].map((value, key) => {
-                  return (
-                    <li key={uniqid()}>Price: ${value} || Size: {key}</li>
-                )
-                })
-              }
-          </div>
-        }
     </div>
   );
 }

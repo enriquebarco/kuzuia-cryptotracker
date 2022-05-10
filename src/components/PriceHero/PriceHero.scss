@@ -1,4 +1,5 @@
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .hero {
     display: flex;
@@ -7,6 +8,10 @@
     padding: 1.5rem 0rem;
     margin: 0 1rem;
     border-bottom: 1px solid rgb(255, 255, 255);
+
+    @include tablet {
+        margin:  0 2rem;
+    }
 
     &__container {
         display: flex;
@@ -26,24 +31,30 @@
     &__price {
         font-size: 1.25rem;
         margin: 0;
+
+        @include tablet {
+            font-size: 1.5rem;
+        }
     }
 
     &__title {
         margin: 0;
         margin-top: .5rem;
         font-size: 1rem;
-    }
 
-    &__BA-price {
-        margin: 0;
-        margin-left: .25rem;
-        font-size: .875rem;
+        @include tablet {
+            font-size: 1.25rem;
+        }
     }
 
     &__subtitle {
         color: $color-primary-fade;
         font-size: .75rem;
         margin: 0;
+
+        @include tablet {
+            font-size: 1rem;
+        }
     }
 
     &__text {
@@ -55,6 +66,10 @@
 
         &--negative {
             color: rgb(255, 97, 97);
+        }
+
+        @include tablet {
+            font-size: 1.4rem;
         }
     }
 

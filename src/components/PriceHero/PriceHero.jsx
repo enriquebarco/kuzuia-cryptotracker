@@ -22,7 +22,7 @@ function PriceHero({ price, price24hr, volume }) {
     <section className="hero">
         
         <div className="hero__container">
-            <h3 className="hero__text">{addCommas(parseFloat(volume).toFixed(2))}</h3>
+            <h3 className="hero__text">{addCommas(parseFloat(volume).toFixed(0))}</h3>
             <h4 className="hero__subtitle">30d Volume</h4>
         </div>
         <div className="hero__container">
