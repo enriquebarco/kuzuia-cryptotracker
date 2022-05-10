@@ -12,6 +12,10 @@
         margin: 0 2rem;
     }
 
+    @include desktop {
+        margin: 0 4rem;
+    }
+
     &__logo {
         width: 4rem;
 

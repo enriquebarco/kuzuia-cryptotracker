@@ -49,7 +49,7 @@ function OrderBook({ bestAsk, bestBid, asks, bids, setIsChart }) {
 
 
       if(!aggregate) {
-        return sorted.slice(0, 20);
+        return sorted.slice(0, 15);
       }
 
       let count = sorted[0][0];
@@ -57,14 +57,14 @@ function OrderBook({ bestAsk, bestBid, asks, bids, setIsChart }) {
       
       //iterate through sorted array and create a new map that aggregates all prices based on state increments
       for(let [price, size] of sorted) {
-        
+        console.log(threshold - count)
         if(price < threshold) {
           aggregatedMap.set(count, (aggregatedMap.get(count) + size) || size);
           
         } else {
+          count = threshold;
           multiple = ((price + aggregate) - threshold) / aggregate
           threshold += (aggregate * multiple);
-          count = threshold;
 
           aggregatedMap.set(count, (aggregatedMap.get(count) + size) || size);
         }
@@ -79,29 +79,23 @@ function OrderBook({ bestAsk, bestBid, asks, bids, setIsChart }) {
       sorted = allEntries.sort((a,b) => b[0] - a[0]);
 
       if(!aggregate) {
-        return sorted.slice(0, 20);
+        return sorted.slice(0, 15);
       }
 
       let count = sorted[0][0];
       let threshold = count - aggregate;
 
       for(let [price, size] of sorted) {
-
-        console.log("start", "count " + count, "price ", price, "threshold " + threshold);
         
         if(price > threshold) {
           aggregatedMap.set(count, (aggregatedMap.get(count) + size) || size);
-          console.log("from boolean ", aggregatedMap)
           
         } else {
+          count = threshold;
           multiple = (threshold - (price - aggregate)) / aggregate
           threshold -= (aggregate * multiple);
-          count = threshold;
           
           aggregatedMap.set(count, (aggregatedMap.get(count) + size) || size);
-          console.log("after increment ", aggregatedMap)
-          
-          console.log("end", "count " + count, "price ", price, "threshold " + threshold);
         }
 
         entries = [...aggregatedMap.entries()].sort((a,b) => b[0] - a[0]);

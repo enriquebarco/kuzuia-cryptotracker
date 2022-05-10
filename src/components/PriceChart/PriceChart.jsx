@@ -1,13 +1,29 @@
 import React, {useState} from 'react'
-import { Line, Chart } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { _Chart as _ChartJS } from 'chart.js/auto'
 import _ from "lodash";
 import "./PriceChart.scss";
 import chartGold from "../../assets/icons/chart-gold.png";
 import lineWhite from "../../assets/icons/line-white.png";
+import { addCommas } from "../../utils";
 
 function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
     const [activeChart, setActiveChart] = useState("sixMonths");
+
+
+    const responsiveFonts = (size) => {
+
+        if(size >= 1280) {
+            return 16;
+        }
+
+        if(size >= 678) {
+            return 14;
+        }
+
+        
+        return 12;
+    }
 
 
     const opts = {
@@ -17,7 +33,10 @@ function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
                 position: "bottom",
                 align: "center",
                 labels: {
-                    color: "white"
+                    color: "white",
+                    font: {
+                        size: responsiveFonts(window.innerWidth),
+                    }
                 }
             },
         },
@@ -28,23 +47,31 @@ function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
         scales: {
             x: {
                 ticks: {
-                    color: "white"
+                    color: "white",
+                    font: {
+                        size: responsiveFonts(window.innerWidth),
+                    }
                 }
             },
             y: {
                 ticks: {
-                    callback: (value) => {
-                        return "$" + value;
+                    callback: (value, index, ticks) => {
+                        return "$" + addCommas(value.toString());
                     },
-                    color:"white"
+                    color:"white",
+                    font: {
+                        size: responsiveFonts(window.innerWidth),
+                    }
                 }
             }
         },
         responsive: true,
         maintainAspectRatio: false
-      };
-      
-      const handleTimeChange1 = () => {
+    };
+
+    
+    
+    const handleTimeChange1 = () => {
           const string = "sixMonths";
         setActiveChart("sixMonths");
         setTimeFrame(string);
@@ -67,7 +94,7 @@ function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
     }
 
     return (
-      <div className="price-chart">
+      <section className="price-chart">
         <div className="price-chart__title-wrapper">
             <h3 className="price-chart__title">Price Charts</h3>
             <div className="price-chart__button-wrapper">
@@ -83,7 +110,7 @@ function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
             </div>
             <Line data={historicalData} options={opts} />
         </div>
-      </div>
+      </section>
   )
 }
 

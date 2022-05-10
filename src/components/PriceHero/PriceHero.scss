@@ -13,6 +13,10 @@
         margin:  0 2rem;
     }
 
+    @include desktop {
+        margin: 0 4rem;
+    }
+
     &__container {
         display: flex;
         flex-direction: column;

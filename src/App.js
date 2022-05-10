@@ -7,6 +7,8 @@ import PriceChart from "./components/PriceChart/PriceChart";
 import OrderBook from "./components/OrderBook/OrderBook";
 import Placeholder from "./components/Placeholder/Placeholder";
 import PriceHero from "./components/PriceHero/PriceHero";
+import DeskTopVersion from "./components/DeskTopVersion/DeskTopVersion";
+import MobileVersion from "./components/MobileVersion/MobileVersion";
 
 function App() {
   const [currencies, setCurrencies] = useState([]);
@@ -20,7 +22,6 @@ function App() {
   const [asks, setAsks] = useState({});
   const [bids, setBids] = useState({});
   const [historicalData, setHistoricalData] = useState({});
-  const [isChart, setIsChart] = useState(true);
   const ws = useRef(null);
 
   let first = useRef(false);
@@ -178,32 +179,30 @@ function App() {
         (_.isEmpty(asks) || _.isEmpty(bids) || !price || !historicalData) ?
         <Placeholder />
         :
-        <>
-          <PriceHero
+        window.innerWidth >= 1280 ?
+          <DeskTopVersion
             price={price}
             price24hr={price24hr}
             volume={volume}
             bestAsk={bestAsk}
             bestBid={bestBid}
+            asks={asks}
+            bids={bids}
+            historicalData={historicalData}
+            setTimeFrame={setTimeFrame}
           />
-
-          {
-            isChart ? 
-            <PriceChart 
-              historicalData={historicalData}
-              setTimeFrame={setTimeFrame}
-              setIsChart={setIsChart}
-            />
-            :
-            <OrderBook
-              bestAsk={bestAsk}
-              bestBid={bestBid}
-              asks={asks}
-              bids={bids}
-              setIsChart={setIsChart}
-            />
-          }
-        </>
+          :
+          <MobileVersion
+            price={price}
+            price24hr={price24hr}
+            volume={volume}
+            bestAsk={bestAsk}
+            bestBid={bestBid}
+            asks={asks}
+            bids={bids}
+            historicalData={historicalData}
+            setTimeFrame={setTimeFrame}
+          />
       }
     </div>
   );

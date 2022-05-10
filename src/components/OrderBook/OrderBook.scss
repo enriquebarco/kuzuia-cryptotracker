@@ -1,9 +1,14 @@
 @use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
 
 .order-book {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+
+    @include desktop {
+        flex-basis: 100%;
+    }
 
     &__title-wrapper {
         flex-basis: 100%;
@@ -12,6 +17,14 @@
         align-items: center;
         margin: 0 1rem;
         padding: 1rem 0;
+
+        @include tablet {
+            margin: 0 2rem;
+        }
+
+        @include desktop {
+            display: none;
+        }
     }
 
     &__container {
@@ -21,10 +34,22 @@
         background-color: rgba(255, 255, 255, 0.123);
         border-radius: 0.5rem;
         padding: 1rem;
+
+        @include tablet {
+            margin: 0 2rem;
+        }
+
+        @include desktop {
+            margin: 0;
+        }
     }
 
     &__title {
         margin: 0;
+
+        @include tablet {
+            font-size: 1.25rem;
+        }
     }
 
     &__button-wrapper {
@@ -80,6 +105,10 @@
         font-size: .75rem;
         color:  $color-primary-fade;
 
+        @include tablet {
+            font-size: 1rem;
+        }
+
         &--ask {
             text-align: right;
         }
@@ -101,6 +130,12 @@
         flex-basis: 100%;
         border-right: 1px solid $color-primary;
         padding-right: 1rem;
+
+        @include desktop {
+            height: 30vh;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
     }
 
     &__column {
@@ -119,6 +154,12 @@
         flex-direction: column;
         flex-basis: 100%;
         padding-left: 1rem;
+
+        @include desktop {
+            height: 30vh;
+            overflow: hidden;
+            overflow-y: scroll;
+        }
     }
 
     &__details-subtitle {
@@ -126,10 +167,18 @@
         font-size: .8125rem;
         color:  $color-primary-fade;
         margin-top: 1rem;
+
+        @include tablet {
+            font-size: 1rem;
+        }
     }
 
     &__text {
         font-size: .75rem;
+
+        @include tablet {
+            font-size: 1rem;
+        }
 
         &--bids {
             color: rgb(88, 248, 88);

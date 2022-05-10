@@ -5,7 +5,12 @@
     padding-bottom: 1rem;
 
     @include tablet {
+        margin: 0 2rem;
         padding-bottom: 2rem;
+    }
+
+    @include desktop {
+        flex-basis: 100%;
     }
 
     &__title-wrapper {
@@ -14,10 +19,14 @@
         align-items: center;
         margin: 0 1rem;
         padding: 1rem 0;
-    }
 
-    @include tablet {
-        margin: 0 2rem;
+        @include tablet {
+            margin: 0 2rem;
+        }
+
+        @include desktop {
+            display: none;
+        }
     }
     
     &__title {
@@ -32,6 +41,7 @@
         width: 2rem;
         padding: 0 .25rem;
         padding-left: .875rem;
+        cursor: pointer;
 
         @include tablet {
             width: 3rem;
@@ -60,6 +70,10 @@
         flex-direction: column;
         height: 60vh;
         padding: 1rem;
+
+        @include desktop {
+            height: 47vh;
+        }
     }
 
     &__dates-wrapper {
@@ -71,6 +85,12 @@
         border-radius: 0.5rem;
         padding: .25rem;
         margin-left: auto;
+
+        @include tablet {
+            margin-top: 1rem;
+            padding: .5rem;
+            width: 16rem;
+        }
     }
 
     &__button {
@@ -79,6 +99,11 @@
         color: white;
         border: none;
         font-weight: 600;
+        cursor: pointer;
+
+        @include tablet {
+            font-size: 1.25rem;
+        }
 
         &-active {
             color: $color-secondary;
