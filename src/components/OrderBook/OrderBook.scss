@@ -1,6 +1,14 @@
 @use "../../styles/variables" as *;
 @use "../../styles/mixins" as *;
 
+::-webkit-scrollbar {
+    width: .07rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: $color-secondary;
+}
+
 .order-book {
     display: flex;
     flex-wrap: wrap;

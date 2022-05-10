@@ -103,6 +103,7 @@ function PriceChart( { historicalData, setTimeFrame, setIsChart } ) {
             </div>
         </div>
         <div className="price-chart__container">
+            <h3 className="price-chart__title-desk">Price Chart</h3>
             <div className="price-chart__dates-wrapper">
                 <button onClick={handleTimeChange1} className={`price-chart__button ${activeChart === "sixMonths" ? "price-chart__button-active" : ""}`}>6 Mos</button>
                 <button onClick={handleTimeChange2} className={`price-chart__button ${activeChart === "threeMonths" ? "price-chart__button-active" : ""}`}>3 Mos</button>
