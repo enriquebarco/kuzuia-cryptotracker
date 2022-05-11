@@ -33,7 +33,7 @@ function App() {
       axios.get(`${url}/products`)
         .then((res) => {
           const mainPairsArr = ["BTC-USD", "ETH-USD", "LTC-USD", "BCH-USD"]
-          const mainPairs = [...res.data].filter((pair) => mainPairsArr.includes(pair.id)); // pairs users will see first
+          const mainPairs = [...res.data].filter((pair) => mainPairsArr.includes(pair.id)).sort((a,b) => a.id.localeCompare(b.id)); // pairs users will see first
           const filtered = [...res.data].filter((pair) => {
             if(pair.quote_currency === "USD" && !mainPairsArr.includes(pair.id)) {
               return pair;  // returning only USD currencies excluding including the main pairs
@@ -43,6 +43,7 @@ function App() {
           });
           const sorted = filtered.sort((a,b) => a.id.localeCompare(b.id)); // sort pairs in alphabetical order
           const totalCurrencies = mainPairs.concat(sorted);
+
           setCurrencies(totalCurrencies);
 
           first.current = true;
@@ -180,7 +181,7 @@ function App() {
         handleSelect={handleSelect}
       />
       {
-        (_.isEmpty(asks) || _.isEmpty(bids) || !price || !historicalData) ?
+        (_.isEmpty(asks) || _.isEmpty(bids) || !price || _.isEmpty(historicalData)) ?
         <Placeholder />
         :
         window.innerWidth >= 1280 ?

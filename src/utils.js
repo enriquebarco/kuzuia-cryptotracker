@@ -46,6 +46,8 @@ export const formatData = (timeFrame, data) => {
     finalData.labels = dates;
     finalData.datasets[0].data = priceArr;
 
+    console.log(finalData);
+
     return finalData;
   };
 

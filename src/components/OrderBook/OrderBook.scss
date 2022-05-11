@@ -3,10 +3,12 @@
 
 ::-webkit-scrollbar {
     width: .07rem;
+    height: .25rem;
 }
 
 ::-webkit-scrollbar-thumb {
     background-color: $color-secondary;
+    border-radius: 100vw;
 }
 
 .order-book {
@@ -142,7 +144,7 @@
         @include desktop {
             height: 30vh;
             overflow: hidden;
-            overflow-y: scroll;
+            overflow-y: auto;
         }
     }
 
