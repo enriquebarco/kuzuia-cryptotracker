@@ -154,6 +154,13 @@ function App() {
     };
   }); //dependency array not included so state is always included in scope after every render cycle
 
+  // setTimeout(() => {
+  //   // preventing timeout from websocket
+  //   if(!pair) {
+  //     setPair("BTC-USD")
+  //   }
+  // }, 15000)
+
   const handleSelect = (e) => {
     let unsubscribeMsg = {
       type: "unsubscribe",

@@ -57,7 +57,7 @@ function OrderBook({ bestAsk, bestBid, asks, bids, setIsChart }) {
       
       //iterate through sorted array and create a new map that aggregates all prices based on state increments
       for(let [price, size] of sorted) {
-        console.log(threshold - count)
+        
         if(price < threshold) {
           aggregatedMap.set(count, (aggregatedMap.get(count) + size) || size);
           
