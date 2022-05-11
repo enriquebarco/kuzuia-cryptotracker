@@ -20,6 +20,7 @@ export const formatData = (timeFrame, data) => {
         break;
       case "oneWeek": newData = data.slice(0, 7);
         break;
+      default:
     }
 
     

@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { Line } from "react-chartjs-2";
+// eslint-disable-next-line
 import { _Chart as _ChartJS } from 'chart.js/auto'
 import "./PriceChart.scss";
 import chartGold from "../../assets/icons/chart-gold.png";
