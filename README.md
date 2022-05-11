@@ -2,7 +2,7 @@
 
 Kuzuia, which means Block in Swahili, is a real-time cryptocurrency tracker that is capable of displaying data on over 170 currency pairs which are always compared to the US dollar. Kuzuia allows users to gather consolidated market information in order to make trading decisions. 
 
-https://627b41b3efefec0008a67bbe--kuzuia.netlify.app/
+https://kuzuia.netlify.app/
 
 By Enrique Barco
 
