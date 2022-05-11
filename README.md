@@ -6,7 +6,7 @@ https://kuzuia.netlify.app/
 
 By Enrique Barco
 
-## How  it works..
+## How  it works...
 
 Users are prompted to select a currency on the landing page.
 
