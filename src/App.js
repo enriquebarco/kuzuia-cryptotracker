@@ -3,10 +3,7 @@ import axios from "axios";
 import { formatData } from "./utils";
 import _ from "lodash";
 import Header from "./components/Header/Header";
-import PriceChart from "./components/PriceChart/PriceChart";
-import OrderBook from "./components/OrderBook/OrderBook";
 import Placeholder from "./components/Placeholder/Placeholder";
-import PriceHero from "./components/PriceHero/PriceHero";
 import DeskTopVersion from "./components/DeskTopVersion/DeskTopVersion";
 import MobileVersion from "./components/MobileVersion/MobileVersion";
 

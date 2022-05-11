@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
 import { Line } from "react-chartjs-2";
 import { _Chart as _ChartJS } from 'chart.js/auto'
-import _ from "lodash";
 import "./PriceChart.scss";
 import chartGold from "../../assets/icons/chart-gold.png";
 import lineWhite from "../../assets/icons/line-white.png";
