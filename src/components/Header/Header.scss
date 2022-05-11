@@ -27,7 +27,7 @@
 
     &__selector {
         background-color: transparent;
-        padding: .5rem 0;
+        padding: .5rem;
         border: 0;
         border-radius: .3125rem;
         color: white;
@@ -35,6 +35,8 @@
         text-align: center;
         border: 1px solid gray;
         outline: none;
+        font-size: 1rem;
+        text-align-last: center;
 
         @include tablet {
             padding: 1rem 0;
@@ -45,6 +47,8 @@
 
         &-option {
             color: black;
+            text-align: center;
+            font-size: 1rem;
         }
     }
 
