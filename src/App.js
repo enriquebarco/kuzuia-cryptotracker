@@ -25,7 +25,7 @@ function App() {
   const url = "https://api.pro.coinbase.com";
 
   useEffect(() => {
-    ws.current = new WebSocket("wss://ws-feed.pro.coinbase.com");
+    ws.current = new WebSocket("wss://ws-feed.exchange.coinbase.com");
     ws.current.onopen = () => console.log("ws open");
     ws.current.onclose = () => console.log("ws closed");
 
